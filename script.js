@@ -263,12 +263,17 @@ function toggleWatched() {
 function addToFavorites() {
   if (!currentMovie) return;
 
-  if (!favorites.find(m => m.id === currentMovie.id)) {
-    favorites.push(currentMovie);
-    localStorage.setItem("favorites", JSON.stringify(favorites));
+  // Prevent duplicates
+  if (favorites.find(m => m.id === currentMovie.id)) {
+    alert("Already in favorites!");
+    return;
   }
 
+  favorites.push(currentMovie);
+  localStorage.setItem("favorites", JSON.stringify(favorites));
   alert("Added to favorites!");
+
+  renderFavorites(); // optional: refresh immediately if you're viewing favorites
 }
 
 function renderFavorites() {
@@ -280,7 +285,7 @@ function renderFavorites() {
     return;
   }
 
-  favorites.forEach(movie => {
+  favorites.forEach((movie, index) => {
     const div = document.createElement("div");
     div.className = "favorite-card";
 
@@ -290,6 +295,7 @@ function renderFavorites() {
       <button class="remove-fav">Remove</button>
     `;
 
+    // Attach remove handler
     div.querySelector(".remove-fav").addEventListener("click", () => {
       removeFavorite(movie.id);
     });
