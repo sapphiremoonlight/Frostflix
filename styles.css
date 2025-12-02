@@ -1,9 +1,8 @@
 /* -------------------------------------------------------
    GLOBAL VARIABLES — Light & Dark Frost Themes
 -------------------------------------------------------- */
-
 :root {
-  /* Light Mode (Glacier Mint Frost) */
+  /* Light Mode */
   --bg-main: #f9fcfd;
   --bg-gradient: linear-gradient(145deg, #ffffff, #eef9ff);
   --glass-light: rgba(255, 255, 255, 0.55);
@@ -12,348 +11,120 @@
   --frost-mint: #a0e8ff;
   --text-primary: #1f2d38;
   --text-secondary: #5a6a74;
-
-  /* Pastel frosted candy cane */
   --candy-red: #e29aa1;
   --candy-white: #ffffff;
-
-  /* Shadows */
-  --shadow-soft: 0 20px 35px rgba(0, 0, 0, 0.08);
-
-  /* Shimmer Effect */
-  --shimmer-color: rgba(255, 255, 255, 0.55);
+  --shadow-soft: 0 20px 35px rgba(0,0,0,0.08);
+  --shimmer-color: rgba(255,255,255,0.55);
 }
 
-/* Dark Mode (Midnight Winter) */
+/* Dark Mode */
 [data-theme="dark"] {
   --bg-main: #0f1a26;
   --bg-gradient: linear-gradient(140deg, #0a121b, #142334);
-  --glass-light: rgba(255, 255, 255, 0.07);
-  --glass-border-light: rgba(255, 255, 255, 0.2);
+  --glass-light: rgba(255,255,255,0.07);
+  --glass-border-light: rgba(255,255,255,0.2);
   --frost-blue: #a5d8ff;
   --frost-mint: #7bdfff;
-
   --text-primary: #f2f8ff;
   --text-secondary: #bcd4e3;
-
-  --candy-red: #ffb9c0;    /* softer in dark mode */
+  --candy-red: #ffb9c0;
   --candy-white: #ffffff;
-
-  --shadow-soft: 0 30px 45px rgba(0, 0, 0, 0.35);
+  --shadow-soft: 0 30px 45px rgba(0,0,0,0.35);
 }
 
 /* -------------------------------------------------------
-   GLOBAL RESET
+   RESET
 -------------------------------------------------------- */
-
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
-
-html, body {
-  width: 100%;
-  height: 100%;
-  font-family: 'Inter', sans-serif;
-  color: var(--text-primary);
-  transition: background 0.4s ease, color 0.4s ease;
-
-  /* Background with snow overlay */
-  background: var(--bg-gradient);
-  background-image: var(--bg-gradient), url('https://images.unsplash.com/photo-1606851092013-92d2c1b7863e?auto=format&fit=crop&w=1800&q=80');
-  background-size: cover;
-  background-blend-mode: overlay;
-}
-
-[data-theme="dark"] {
-  background-image: var(--bg-gradient), url('https://images.unsplash.com/photo-1516116216624-53e697fedbe0?auto=format&fit=crop&w=1800&q=80');
-}
+* { margin:0; padding:0; box-sizing:border-box; }
+html, body { width:100%; height:100%; font-family:'Inter',sans-serif; background:var(--bg-gradient); color:var(--text-primary); transition:0.4s; }
 
 /* -------------------------------------------------------
-   NAVIGATION (Frosted Glass Tabs)
+   NAVIGATION TABS
 -------------------------------------------------------- */
-
 nav#top-nav {
-  display: flex;
-  justify-content: center;
-  gap: 30px;
-  padding: 20px 0;
-  backdrop-filter: blur(16px);
-  background: var(--glass-light);
-  border-bottom: 1px solid var(--glass-border-light);
-  position: sticky;
-  top: 0;
-  z-index: 20;
+  display:flex; justify-content:center; gap:30px;
+  padding:20px 0; backdrop-filter:blur(16px);
+  background: var(--glass-light); border-bottom:1px solid var(--glass-border-light);
+  position:sticky; top:0; z-index:20;
 }
-
 .tab-btn {
-  background: transparent;
-  border: none;
-  padding: 10px 16px;
-  font-size: 15px;
-  letter-spacing: 0.5px;
-  color: var(--text-primary);
-  cursor: pointer;
-  position: relative;
-  transition: 0.3s;
+  background:transparent; border:none; padding:10px 16px; font-size:15px; letter-spacing:0.5px;
+  color: var(--text-primary); cursor:pointer; position:relative; transition:0.3s;
 }
-
-.tab-btn:hover {
-  color: var(--frost-mint);
-}
-
+.tab-btn:hover { color: var(--frost-mint); }
 .tab-btn.active::after {
-  content: "";
-  position: absolute;
-  left: 50%;
-  transform: translateX(-50%);
-  bottom: -5px;
-  width: 40%;
-  height: 2px;
-  background: var(--frost-mint);
-  border-radius: 2px;
+  content:""; position:absolute; left:50%; transform:translateX(-50%); bottom:-5px;
+  width:40%; height:2px; background:var(--frost-mint); border-radius:2px;
 }
 
 /* -------------------------------------------------------
-   MAIN APP CONTAINER
+   APP CONTAINER
 -------------------------------------------------------- */
-
-#app {
-  width: 100%;
-  max-width: 900px;
-  margin: 40px auto 80px;
-  padding: 0 20px;
-  animation: fadeIn 0.5s ease forwards;
-}
-
-/* Fade animation */
-@keyframes fadeIn {
-  from { opacity: 0; transform: translateY(10px); }
-  to { opacity: 1; transform: translateY(0); }
-}
+#app { width:100%; max-width:900px; margin:40px auto 80px; padding:0 20px; animation:fadeIn 0.5s ease forwards; }
+@keyframes fadeIn { from{opacity:0; transform:translateY(10px);} to{opacity:1; transform:translateY(0);} }
 
 /* -------------------------------------------------------
-   CANDY CANE BUTTONS (CC2 Frosted Pastel)
+   CANDY CANE BUTTONS
 -------------------------------------------------------- */
-
 .candy-button {
-  background: repeating-linear-gradient(
-    45deg,
-    var(--candy-white) 0,
-    var(--candy-white) 10px,
-    var(--candy-red) 10px,
-    var(--candy-red) 20px
-  );
-  padding: 12px 28px;
-  border-radius: 12px;
-  border: 2px solid var(--candy-red);
-  cursor: pointer;
-  font-weight: 500;
-  color: var(--text-primary);
-  box-shadow: var(--shadow-soft);
-  transition: 0.25s ease;
-  position: relative;
-  z-index: 2; /* above shimmer */
+  background: repeating-linear-gradient(45deg, var(--candy-white) 0, var(--candy-white) 10px, var(--candy-red) 10px, var(--candy-red) 20px);
+  padding: 10px 22px; border-radius:12px; border:2px solid var(--candy-red); cursor:pointer;
+  font-weight:500; color:var(--text-primary); box-shadow:var(--shadow-soft); transition:0.25s ease; margin-right:6px;
 }
-
-.candy-button:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 10px 25px rgba(0,0,0,0.12);
-}
+.candy-button:hover { transform:translateY(-2px); box-shadow:0 10px 25px rgba(0,0,0,0.12); }
 
 /* -------------------------------------------------------
-   FLOATING MINIMAL MOVIE CARD (CS3)
+   MOVIE CARD DISPLAY
 -------------------------------------------------------- */
-
-.movie-card {
-  background: var(--glass-light);
-  border: 1px solid var(--glass-border-light);
-  border-radius: 18px;
-  padding: 22px;
-  box-shadow: var(--shadow-soft);
-  backdrop-filter: blur(14px);
-  display: flex;
-  flex-direction: column;
-  gap: 18px;
-  transition: transform 0.25s ease, box-shadow 0.25s ease;
-  position: relative;
-  overflow: hidden;
+.movie-card { background:var(--glass-light); border:1px solid var(--glass-border-light);
+  border-radius:18px; padding:22px; box-shadow:var(--shadow-soft); backdrop-filter:blur(14px);
+  display:flex; flex-direction:column; gap:18px; transition:0.25s ease; position:relative; overflow:hidden;
 }
-
-/* Subtle shimmer on hover (EF5) */
-.movie-card::after {
-  content: "";
-  position: absolute;
-  top: -120%;
-  left: -50%;
-  width: 200%;
-  height: 300%;
-  background: linear-gradient(
-    120deg,
-    transparent 0%,
-    var(--shimmer-color) 50%,
-    transparent 100%
-  );
-  transform: rotate(25deg);
-  opacity: 0;
-  transition: opacity 0.5s;
-  pointer-events: none; /* allow clicks through shimmer */
-}
-
-.movie-card:hover::after {
-  opacity: 0.15;
-}
-
-.movie-card:hover {
-  transform: translateY(-5px);
-}
-
-/* Poster styling */
-.movie-card img {
-  width: 80%;
-  margin: 0 auto;
-  border-radius: 14px;
-  object-fit: cover;
-  display: block;
-}
-
-/* Title */
-.movie-title {
-  font-family: 'Playfair Display', serif;
-  font-size: 26px;
-  margin-bottom: 4px;
-  text-align: center;
-}
-
-/* Description text */
-.movie-overview {
-  color: var(--text-secondary);
-  line-height: 1.56;
-  text-align: center;
-}
+.movie-card:hover { transform:translateY(-5px); }
+.movie-card img { width:90%; border-radius:14px; margin:0 auto; object-fit:cover; }
+.movie-title { font-family:'Playfair Display',serif; font-size:26px; margin-bottom:4px; text-align:center; }
+.movie-overview { color:var(--text-secondary); line-height:1.56; text-align:center; }
+#movie-display img { width:180px; border-radius:12px; display:block; margin:12px auto; }
+#movie-display h2, #movie-display h4 { text-align:center; margin:8px 0; }
+#movie-display p { text-align:center; margin:4px 0; }
+#trailer-link { display:block; text-align:center; margin-top:6px; text-decoration:none; color:var(--frost-blue); font-weight:500; }
 
 /* -------------------------------------------------------
-   MOOD BUTTONS (minimal frosty)
+   MOOD BUTTONS
 -------------------------------------------------------- */
-
-.mood-buttons {
-  display: flex;
-  gap: 12px;
-  margin: 25px 0;
-  flex-wrap: wrap;
-  justify-content: center;
-}
-
+.mood-buttons { display:flex; gap:12px; margin:25px 0; flex-wrap:wrap; justify-content:center; }
 .mood-btn {
-  padding: 10px 18px;
-  border-radius: 12px;
-  background: var(--glass-light);
-  border: 1px solid var(--glass-border-light);
-  backdrop-filter: blur(10px);
-  cursor: pointer;
-  transition: 0.2s;
-  color: var(--text-primary);
+  padding:10px 18px; border-radius:12px; background:var(--glass-light); border:1px solid var(--glass-border-light);
+  backdrop-filter:blur(10px); cursor:pointer; transition:0.2s; color:var(--text-primary);
 }
-
-.mood-btn:hover {
-  background: var(--frost-blue);
-}
+.mood-btn:hover { background: var(--frost-blue); }
 
 /* -------------------------------------------------------
    FAVORITES GRID
 -------------------------------------------------------- */
-
-.favorites-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
-  gap: 25px;
-  margin-top: 20px;
-}
-
-.favorite-card {
-  background: var(--glass-light);
-  border: 1px solid var(--glass-border-light);
-  padding: 10px;
-  border-radius: 14px;
-  text-align: center;
-  box-shadow: var(--shadow-soft);
-}
-
-.favorite-card img {
-  width: 100%;
-  border-radius: 10px;
-}
+.favorites-grid { display:grid; grid-template-columns:repeat(auto-fill, minmax(140px,1fr)); gap:25px; margin-top:20px; }
+.favorite-card { background:var(--glass-light); border:1px solid var(--glass-border-light); padding:10px; border-radius:14px; text-align:center; box-shadow:var(--shadow-soft); cursor:pointer; }
+.favorite-card img { width:100%; border-radius:10px; }
 
 /* -------------------------------------------------------
-   CALENDAR — Frosted Minimal Grid
+   CALENDAR
 -------------------------------------------------------- */
-
-.calendar {
-  display: grid;
-  grid-template-columns: repeat(7, 1fr);
-  gap: 14px;
-  margin-top: 20px;
-}
-
-.calendar-day {
-  aspect-ratio: 1;
-  background: var(--glass-light);
-  border: 1px solid var(--glass-border-light);
-  border-radius: 12px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  font-size: 15px;
-  transition: 0.2s;
-}
-
-.calendar-day:hover {
-  background: var(--frost-mint);
-}
-
-.calendar-day.logged {
-  background: var(--frost-blue);
-  color: #000;
-  font-weight: 600;
-}
+.calendar { display:grid; grid-template-columns:repeat(7,1fr); gap:14px; margin-top:20px; }
+.calendar-day { aspect-ratio:1; background:var(--glass-light); border:1px solid var(--glass-border-light);
+  border-radius:12px; display:flex; align-items:center; justify-content:center; cursor:pointer; font-size:15px; transition:0.2s; }
+.calendar-day:hover { background: var(--frost-mint); }
+.calendar-day.logged { background: var(--frost-blue); color:#000; font-weight:600; }
+#calendar-details img { width:120px; border-radius:12px; margin-bottom:8px; display:block; margin-left:auto; margin-right:auto; }
+#calendar-details h3, #calendar-details h4, #calendar-details p { text-align:center; margin:6px 0; }
 
 /* -------------------------------------------------------
    SETTINGS PANEL
 -------------------------------------------------------- */
-
-.settings-panel {
-  background: var(--glass-light);
-  border: 1px solid var(--glass-border-light);
-  padding: 20px;
-  border-radius: 18px;
-  backdrop-filter: blur(14px);
-}
-
-.settings-panel h2 {
-  font-family: "Playfair Display", serif;
-  margin-bottom: 12px;
-}
-
-/* Sliders, selects */
-.settings-panel input,
-.settings-panel select {
-  width: 100%;
-  padding: 8px 10px;
-  border-radius: 10px;
-  border: 1px solid var(--glass-border-light);
-  background: var(--glass-light);
-  backdrop-filter: blur(10px);
-  margin-bottom: 16px;
-}
+.settings-panel { background: var(--glass-light); border:1px solid var(--glass-border-light); padding:20px; border-radius:18px; backdrop-filter:blur(14px); }
+.settings-panel h2 { font-family:'Playfair Display', serif; margin-bottom:12px; }
+.settings-panel input, .settings-panel select { width:100%; padding:8px 10px; border-radius:10px; border:1px solid var(--glass-border-light); background:var(--glass-light); backdrop-filter:blur(10px); margin-bottom:16px; }
 
 /* -------------------------------------------------------
    RESPONSIVE
 -------------------------------------------------------- */
-
-@media (max-width: 700px) {
-  .mood-buttons {
-    flex-wrap: wrap;
-  }
-}
+@media(max-width:700px){ .mood-buttons{ flex-wrap:wrap; } }
