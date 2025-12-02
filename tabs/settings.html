@@ -1,0 +1,40 @@
+<div class="tab-page" id="settings-page">
+
+  <h1 class="page-title">Settings</h1>
+
+  <section class="settings-panel">
+
+    <h2>Filters</h2>
+
+    <label>Rating</label>
+    <select id="filter-rating">
+      <option value="">Any</option>
+      <option value="G">G</option>
+      <option value="PG">PG</option>
+      <option value="PG-13">PG-13</option>
+      <option value="R">R</option>
+    </select>
+
+    <label>Runtime</label>
+    <select id="filter-runtime">
+      <option value="">Any</option>
+      <option value="short">&lt; 90 min</option>
+      <option value="medium">90–120 min</option>
+      <option value="long">&gt; 120 min</option>
+    </select>
+
+    <label>Release Year</label>
+    <input type="range" id="filter-year" min="1980" max="2025" value="1995">
+    <p id="year-output">1995</p>
+
+    <h2 style="margin-top:25px;">Appearance</h2>
+
+    <label>Theme</label>
+    <select id="theme-toggle">
+      <option value="light">Light Frost</option>
+      <option value="dark">Dark Frost</option>
+    </select>
+
+  </section>
+
+</div>
