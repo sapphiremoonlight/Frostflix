@@ -68,6 +68,3 @@ frostflix/
 3. Set the source branch to `main` (or `master`) and root folder `/`.
 4. Save and wait a few minutes.
 5. Your site will be live at `https://sapphiremoonlight/Frostflix/`
-
----
-Do you want me to do that too?
