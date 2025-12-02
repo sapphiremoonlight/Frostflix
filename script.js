@@ -1,7 +1,7 @@
 /***************************************************
  *                  C O N F I G
  ***************************************************/
-const API_KEY = "15edf5f6cb594f8289d42380add9108d"; // <-- Replace this with your TMDB API key
+const API_KEY = "15edf5f6cb594f8289d42380add9108d";
 const BASE_URL = "https://api.themoviedb.org/3";
 const IMAGE_BASE = "https://image.tmdb.org/t/p/w500";
 
@@ -66,7 +66,6 @@ function setupThemeToggle() {
   const saved = localStorage.getItem("theme") || "light";
   document.documentElement.setAttribute("data-theme", saved);
 
-  // Handle changes in settings tab once loaded
   document.addEventListener("change", (e) => {
     if (e.target.id === "theme-toggle") {
       const theme = e.target.value;
@@ -96,18 +95,11 @@ function getFilters() {
 }
 
 function passesFilters(movie, filters) {
-  // Release date
   if (filters.year) {
     const movieYear = movie.release_date?.slice(0, 4);
     if (movieYear < filters.year) return false;
   }
-
-  // Rating (from certification)
-  if (filters.rating && movie.adult !== undefined) {
-    // TMDB doesn't include MPAA rating directly, so skip strict filtering
-  }
-
-  // Runtime — we check after fetching full details
+  // Skipping strict rating as TMDB doesn't provide MPAA directly
   return true;
 }
 
@@ -184,18 +176,17 @@ function initPickerTab() {
   });
 
   document.getElementById("favorite-btn")?.addEventListener("click", addToFavorites);
+  document.getElementById("watched-btn")?.addEventListener("click", toggleWatched);
 }
 
 async function handleMoodSelect(mood) {
   const genreIDs = moodMap[mood];
   const filters = getFilters();
 
-  // Filter by mood
   currentMoodMovies = christmasMovies.filter(movie =>
     movie.genre_ids.some(g => genreIDs.includes(g)) && passesFilters(movie, filters)
   );
 
-  // Apply runtime filter asynchronously
   const filtered = [];
   for (const m of currentMoodMovies) {
     if (await passesRuntimeFilter(m, filters.runtime)) filtered.push(m);
@@ -230,7 +221,6 @@ async function displayMovie(movie) {
   document.getElementById("movie-info").textContent =
     `⭐ ${movie.vote_average} | 📅 ${movie.release_date}`;
 
-  // Trailer
   const res = await fetch(
     `${BASE_URL}/movie/${movie.id}/videos?api_key=${API_KEY}`
   );
@@ -245,7 +235,26 @@ async function displayMovie(movie) {
     link.hidden = true;
   }
 
-  logToday(movie);
+  logToday(movie); // auto-log current movie
+}
+
+/***************************************************
+ * WATCHED / UNWATCHED
+ ***************************************************/
+function toggleWatched() {
+  if (!currentMovie) return;
+
+  const today = new Date().toISOString().slice(0, 10);
+
+  if (movieLog[today] && movieLog[today].id === currentMovie.id) {
+    movieLog[today].watched = !movieLog[today].watched;
+  } else {
+    movieLog[today] = { ...currentMovie, watched: true };
+  }
+
+  localStorage.setItem("movieLog", JSON.stringify(movieLog));
+  buildCalendar();
+  alert(movieLog[today].watched ? "Marked as watched!" : "Marked as unwatched!");
 }
 
 /***************************************************
@@ -278,10 +287,21 @@ function renderFavorites() {
     div.innerHTML = `
       <img src="${IMAGE_BASE + movie.poster_path}">
       <p>${movie.title}</p>
+      <button class="remove-fav">Remove</button>
     `;
+
+    div.querySelector(".remove-fav").addEventListener("click", () => {
+      removeFavorite(movie.id);
+    });
 
     list.appendChild(div);
   });
+}
+
+function removeFavorite(movieId) {
+  favorites = favorites.filter(m => m.id !== movieId);
+  localStorage.setItem("favorites", JSON.stringify(favorites));
+  renderFavorites();
 }
 
 /***************************************************
@@ -289,12 +309,13 @@ function renderFavorites() {
  ***************************************************/
 function logToday(movie) {
   const today = new Date().toISOString().slice(0, 10);
-  movieLog[today] = movie;
+  movieLog[today] = { ...movie, watched: true };
   localStorage.setItem("movieLog", JSON.stringify(movieLog));
 }
 
 function buildCalendar() {
   const cal = document.getElementById("calendar");
+  if (!cal) return;
   cal.innerHTML = "";
 
   const year = new Date().getFullYear();
@@ -306,10 +327,12 @@ function buildCalendar() {
     const div = document.createElement("div");
     div.className = "calendar-day";
 
-    if (movieLog[dateStr]) div.classList.add("logged");
+    if (movieLog[dateStr]) {
+      div.classList.add("logged");
+      if (movieLog[dateStr].watched === false) div.style.opacity = 0.6;
+    }
 
     div.textContent = d;
-
     div.addEventListener("click", () => openCalendarDay(dateStr));
 
     cal.appendChild(div);
@@ -339,7 +362,6 @@ function initSettingsTab() {
   const themeSelect = document.getElementById("theme-toggle");
   themeSelect.value = localStorage.getItem("theme") || "light";
 
-  // Initialize year display
   const year = document.getElementById("filter-year");
   if (year) document.getElementById("year-output").textContent = year.value;
 }
