@@ -305,17 +305,10 @@ function removeFavorite(movieId) {
 }
 
 /***************************************************
- * DAILY MOVIE LOG — CALENDAR
+ * DAILY MOVIE LOG — CALENDAR (with toggle)
  ***************************************************/
-function logToday(movie) {
-  const today = new Date().toISOString().slice(0, 10);
-  movieLog[today] = { ...movie, watched: true };
-  localStorage.setItem("movieLog", JSON.stringify(movieLog));
-}
-
 function buildCalendar() {
   const cal = document.getElementById("calendar");
-  if (!cal) return;
   cal.innerHTML = "";
 
   const year = new Date().getFullYear();
@@ -327,12 +320,10 @@ function buildCalendar() {
     const div = document.createElement("div");
     div.className = "calendar-day";
 
-    if (movieLog[dateStr]) {
-      div.classList.add("logged");
-      if (movieLog[dateStr].watched === false) div.style.opacity = 0.6;
-    }
+    if (movieLog[dateStr]) div.classList.add("logged");
 
     div.textContent = d;
+
     div.addEventListener("click", () => openCalendarDay(dateStr));
 
     cal.appendChild(div);
@@ -353,6 +344,24 @@ function openCalendarDay(dateStr) {
   document.getElementById("log-poster").src = IMAGE_BASE + movie.poster_path;
   document.getElementById("log-title").textContent = movie.title;
   document.getElementById("log-overview").textContent = movie.overview;
+
+  const toggleBtn = document.getElementById("toggle-watched");
+  toggleBtn.textContent = "Mark as Unwatched";
+
+  toggleBtn.onclick = () => toggleWatched(dateStr);
+}
+
+function toggleWatched(dateStr) {
+  if (movieLog[dateStr]) {
+    // Remove watched
+    delete movieLog[dateStr];
+  } else if (currentMovie) {
+    // Mark current movie as watched for this day
+    movieLog[dateStr] = currentMovie;
+  }
+  localStorage.setItem("movieLog", JSON.stringify(movieLog));
+  buildCalendar();           // refresh calendar
+  openCalendarDay(dateStr);  // refresh panel
 }
 
 /***************************************************
